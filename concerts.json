@@ -1,0 +1,32 @@
+[
+  {
+    "location": "Bandung",
+    "guestStar": "JS Band",
+    "totalAudience": 100,
+    "performanceDate": "2022-03-25"
+  },
+  {
+    "location": "Jakarta",
+    "guestStar": "Node Band",
+    "totalAudience": 120,
+    "performanceDate": "2022-03-25"
+  },
+  {
+    "location": "Surabaya",
+    "guestStar": "Express Band",
+    "totalAudience": 80,
+    "performanceDate": "2022-03-25"
+  },
+  {
+    "location": "Balikpapan",
+    "guestStar": "Sequelize Band",
+    "totalAudience": 150,
+    "performanceDate": "2022-03-25"
+  },
+  {
+    "location": "Padang",
+    "guestStar": "React Band",
+    "totalAudience": 200,
+    "performanceDate": "2022-03-25"
+  }
+]
