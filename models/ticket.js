@@ -44,7 +44,10 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate(instance) {
         instance.code = `${instance.seatNumber}_${instance.type}`
-      }
+      },
+      beforeUpdate(instance) {
+        instance.code = `${instance.seatNumber}_${instance.type}`
+      },
     },
     modelName: 'Ticket',
   });

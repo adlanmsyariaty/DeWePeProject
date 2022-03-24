@@ -2,7 +2,7 @@ const { Concert, Ticket, User, Profile } = require('../models')
 const { Op } = require('sequelize')
 class ControllerTicket {
     static bookingTicket(req, res) {
-        const userId = +req.params.userId
+        const userId = req.session.userId
         const concertId = +req.params.concertId
         const errors = req.query.errors
         Concert.findByPk(concertId)
@@ -20,7 +20,7 @@ class ControllerTicket {
     static saveBookingTicket(req, res) {
         const {seatNumber, type} = req.body
         const concertId = +req.params.concertId
-        const userId = +req.params.userId
+        const userId = req.session.userId
         Ticket.create({
             seatNumber,
             type,
@@ -28,17 +28,17 @@ class ControllerTicket {
             ConcertId: concertId
         })
             .then(() => {
-                res.redirect(`/concerts/${userId}?notif=success`)
+                res.redirect(`/concerts?notif=success`)
             })
             .catch(err => {
                 if (err.name === 'SequelizeValidationError') {
                     err = err.errors.map(el => el.message)
                 }
-                res.redirect(`/tickets/${userId}/booking/${concertId}?errors=${err}`)
+                res.redirect(`/tickets/booking/${concertId}?errors=${err}`)
             })
     }
     static cancel(req, res) {
-        const userId = +req.params.userId
+        const userId = req.session.userId
         const concertId = +req.params.concertId
         Ticket.destroy({
             where: {
@@ -49,14 +49,14 @@ class ControllerTicket {
             }
         })
             .then(() => {
-                res.redirect(`/concerts/${userId}?notif=cancel`)
+                res.redirect(`/concerts?notif=cancel`)
             })
             .catch(err => {
                 res.send(err)
             })
     }
     static changeTicket(req, res) {
-        const userId = +req.params.userId
+        const userId = +req.session.userId
         const errors = req.query.errors
         let result = []
         Ticket.findOne({
@@ -81,10 +81,9 @@ class ControllerTicket {
             })
     }
     static saveChangedTicket(req, res) {
-        const {userId, ticketId} = req.params
+        const userId = +req.session.userId
+        const {ticketId} = req.params
         const {concertId, seatNumber, type} = req.body
-        console.log(req.body)
-        console.log(req.params)
         Ticket.update({
             seatNumber,
             type,
@@ -93,16 +92,17 @@ class ControllerTicket {
         }, {
             where: {
                 id: ticketId
-            }
+            },
+            individualHooks: true
         })
             .then(() => {
-                res.redirect(`/concerts/${userId}?notif=update`)
+                res.redirect(`/concerts/?notif=update`)
             })
             .catch(err => {
                 if (err.name === 'SequelizeValidationError') {
                     err = err.errors.map(el => el.message)
                 }
-                res.redirect(`/tickets/${userId}/change?errors=${err}`)
+                res.redirect(`/tickets/change/${ticketId}?errors=${err}`)
             })
     }
 }

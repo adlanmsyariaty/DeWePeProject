@@ -2,7 +2,10 @@ const { Concert, Ticket, User, Profile } = require('../models')
 
 class Controller {
     static home(req, res) {
-        res.render('home')
+        const userId = req.session.userId
+        res.render('home', {
+            userId
+        })
     }
 }
 
