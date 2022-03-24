@@ -24,6 +24,15 @@
     <div class="form">
         <div class="col-12">
             <h1>Register Form</h1>
+            <% if (errors) {%>
+              <% errors = errors.split(',')%>
+              <% errors.forEach(el => {%>
+                  <div style="background-color:rgb(253, 230, 230); text-align:center;font-weight: bold">
+                      <%= el%>
+                      <br>
+                  </div>
+              <% }) %>
+          <% } %>
             <form action="/users/register" method="post">
 
                 <div class="mb-3">

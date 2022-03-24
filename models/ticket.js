@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const generateUserCode = require('../helpers/generateCode.js')
 module.exports = (sequelize, DataTypes) => {
   class Ticket extends Model {
     /**
@@ -43,10 +44,10 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     hooks: {
       beforeCreate(instance) {
-        instance.code = `${instance.seatNumber}_${instance.type}`
+        instance.code = generateUserCode(instance)
       },
       beforeUpdate(instance) {
-        instance.code = `${instance.seatNumber}_${instance.type}`
+        instance.code = generateUserCode(instance)
       },
     },
     modelName: 'Ticket',

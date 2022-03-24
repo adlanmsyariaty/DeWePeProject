@@ -1,11 +1,18 @@
 const { Concert, Ticket, User, Profile } = require('../models')
 const { Op } = require('sequelize')
+const nodemailer = require('nodemailer')
+
 class ControllerTicket {
     static bookingTicket(req, res) {
         const userId = req.session.userId
         const concertId = +req.params.concertId
         const errors = req.query.errors
-        Concert.findByPk(concertId)
+        Concert.findOne({
+            where: {
+                id: concertId
+            },
+            include: Ticket
+        })
             .then(result => {
                 res.render('tickets/bookingTicketForm', {
                     result,
@@ -28,6 +35,40 @@ class ControllerTicket {
             ConcertId: concertId
         })
             .then(() => {
+                return Ticket.findOne({
+                    where: {
+                        UserId: userId
+                    },
+                    include: [User, Concert]
+                })
+            })
+            .then((result) => {
+                let transporter = nodemailer.createTransport({
+                    service: "hotmail",
+                    auth: {
+                        user: "team15pp22@outlook.co.id",
+                        pass: "DimKur123"
+                    }
+                });
+                console.log(result.User)
+                let mailOptions = {
+                    from: 'team15pp22@outlook.co.id',
+                    to: `${result.User.email}`,
+                    subject: 'Test masuk nodemailer',
+                    text: `You have already booked ticket for DeWePe Project and this your ticket information
+                    Name: ${result.User.fullName}
+                    Seat Number: ${result.seatNumber}
+                    Type: ${result.type}
+                    Your Ticket Code: ${result.code}
+                    Guest Star: ${result.Concert.guestStar}
+                    `
+                };
+
+                transporter.sendMail(mailOptions, (err, info) => {
+                    if (err) console.log(err);
+                });
+
+                console.log('success send email from nodemailer')
                 res.redirect(`/concerts?notif=success`)
             })
             .catch(err => {

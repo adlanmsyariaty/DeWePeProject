@@ -41,7 +41,7 @@
             align-items: center;
             border-radius: 5px;
             overflow: hidden;
-            background-color: antiquewhite;
+            background-color: rgb(202, 244, 255);
             box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
         }
         .card div {
@@ -90,35 +90,53 @@
         <ul style="display:flex; align-items: center; list-style: none; gap: 1.5rem; margin: 10px;">
             <li><a href="/" style="color:white; text-decoration:none; font-weight: bold;">HOME</a></li>
         <% if (result[1].Ticket !== null) {%>
-            <li><a href="/tickets/change/<%= result[1].Ticket.id%>" style="color:white; text-decoration:none; font-weight: bold;">CHANGE SEAT</a></li>
+            <li><a href="/tickets/change/<%= result[1].Ticket.id%>" style="color:white; text-decoration:none; font-weight: bold;">CHANGE TICKET</a></li>
         <% } %>
             <li><a href="/users/detail" style="color:white; text-decoration:none; font-weight: bold;">PROFILE</a></li>
         </ul>
     </div>
+    <div style="margin: 20px 80px 0px 80px;">
+        <form action="/concerts">
+            <input type="checkbox" id="vehicle1" name="date" value="ASC">
+            <label>Sort by Date</label>
+            <div style="display:flex;justify-content:space-between">
+                <input placeholder="Search by Band Name..." class="form-control" name="guestStar">
+                <button type="Submit" style="width:100px; font-weight:bold">Search</button>
+            </div>
+        </form>
+    </div>
     <br>
     <div style="text-align: center; font-weight: bold;">
     <% if (notif === 'success') {%>
-        <p style="color:green">Success to book the ticket</p>
+        <p style="color:green">Success to book the ticket and please check your email for detail information</p>
     <% } else if (notif === 'cancel') {%>
         <p style="color:green">Success to cancel the ticket</p>
     <% } else if (notif === 'update') {%>
         <p style="color:green">Success to update the ticket</p>
     <% } %>
     </div>
+    <% if(result[1].role === 'admin') { %>
+        <a href="/concerts/add"><button class="btn btn-primary" style="margin-left: 85px;">Add</button></a>
+    <% } %>
     <div class="content-container">
     <% for(let i = 0; i < result[0].length; i++) {%>
         <div class="card">
             <h1 style="text-align:center"><%= result[0][i].guestStar%></h1>
-            <h4><%=result[0][i].performanceDate.toLocaleDateString('en-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })%></h4>
+            <h4><%=result[0][i].dateFormatter()%></h4>
             <h4>Location: <%=result[0][i].location%></h4>
             <h4>Total Audiance: <%=result[0][i].totalAudience%></h4>
             <ul style="display:flex; align-items: center; list-style: none; gap: 0rem;">
-            <% if (result[1].Ticket === null) {%>
-                <li><a class="btn btn-booking" href="/tickets/booking/<%=result[0][i].id%>">Booking</a></li>
-            <% } %>
-            <% if (result[1].Ticket !== null && result[1].Ticket.ConcertId === result[0][i].id) {%>
-                <li><a class="btn btn-delete" href="/tickets/cancel/<%=result[0][i].id%>">Cancel</a></li>
-            <% } %>
+                <% if( result[1].role === 'admin') { %>
+                    <li><a class="btn btn-booking" href="/concerts/edit/<%=result[0][i].id%>">Edit</a></li>
+                    <li><a class="btn btn-delete" href="/concerts/delete/<%=result[0][i].id%>">Delete</a></li>
+                <% } else { %>
+                    <% if (result[1].Ticket === null) { %>
+                        <li><a class="btn btn-booking" href="/tickets/booking/<%=result[0][i].id%>">Booking</a></li>
+                        <% } %>
+                        <% if (result[1].Ticket !== null && result[1].Ticket.ConcertId === result[0][i].id) { %>
+                        <li><a class="btn btn-delete" href="/tickets/cancel/<%=result[0][i].id%>">Cancel</a></li>
+                    <% } %>
+                <% } %>
             </ul>
         </div>
     <% } %>
