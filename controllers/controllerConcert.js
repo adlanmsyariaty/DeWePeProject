@@ -2,7 +2,7 @@ const { Concert, Ticket, User, Profile } = require('../models')
 
 class ControllerConcert {
     static showConcerts(req, res) {
-        const userId = +req.params.userId
+        const userId = req.session.userId
         const notif = req.query.notif
         let result = []
         Concert.findAll()

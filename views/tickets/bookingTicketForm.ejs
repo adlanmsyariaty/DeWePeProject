@@ -41,7 +41,7 @@
         <h1 style="margin:10px; color: white;">DeWePe Ticket Online</h1>
         <ul style="display:flex; align-items: center; list-style: none; gap: 2rem; margin: 10px;">
             <li><a href="/" style="color:white; text-decoration:none; font-weight: bold;">HOME</a></li>
-            <li><a href="/users/detail/<%=userId%>" style="color:white; text-decoration:none; font-weight: bold;">PROFILE</a></li>
+            <li><a href="/users/detail" style="color:white; text-decoration:none; font-weight: bold;">PROFILE</a></li>
         </ul>
     </div>
     <div style="margin-top:20px;margin-bottom:60px; margin-left:150px;margin-right:150px">
@@ -72,7 +72,7 @@
         <% } %>
         </div>
         <br>
-        <form action="/tickets/<%= userId%>/booking/<%= result.id%>" method="POST">
+        <form action="/tickets/booking/<%= result.id%>" method="POST">
             <div class="form-group">
                 <label>Seat Number</label>
                 <input name="seatNumber" class="form-control" placeholder="Type your seat number...">
