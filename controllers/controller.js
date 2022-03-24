@@ -1,8 +1,8 @@
 const { Concert, Ticket, User, Profile } = require('../models')
 
 class Controller {
-    static home() {
-
+    static home(req, res) {
+        res.render('home')
     }
 }
 
