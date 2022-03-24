@@ -13,12 +13,70 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Concert.hasMany(models.Ticket)
     }
+
+    dateFormatterEditForm() {
+      return `${this.performanceDate.toISOString().substring(0, 10)}`
+    }
+
   }
   Concert.init({
-    guestStar: DataTypes.STRING,
-    performanceDate: DataTypes.DATE,
-    totalAudience: DataTypes.INTEGER,
-    location: DataTypes.STRING
+    guestStar: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Please Insert Guest Star Name'
+        },
+        notNull: {
+          args: true,
+          msg: "Can't allow null"
+        }
+      }
+    },
+    performanceDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Select performance date'
+        },
+        notNull: {
+          args: true,
+          msg: "Can't allow null"
+        }
+      }
+    },
+    totalAudience: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Insert maximum total audience'
+        },
+        notNull: {
+          args: true,
+          msg: "Can't allow null"
+        }
+      }
+    },
+    location: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Insert performance location'
+        },
+        notNull: {
+          args: true,
+          msg: "Can't allow null"
+        }
+      }
+
+    }
   }, {
     sequelize,
     modelName: 'Concert',

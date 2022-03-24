@@ -22,6 +22,15 @@
     <div class="form">
         <div class="col-12">
             <h1>Edit Profile #<%= user.id %> </h1>
+            <% if (error) {%>
+                <% error = error.split(',')%>
+                <% error.forEach(el => {%>
+                    <div style="background-color:rgb(253, 230, 230); text-align:center;font-weight: bold">
+                        <%= el%>
+                        <br>
+                    </div>
+                <% }) %>
+            <% } %>
             <form action="/users/<%= user.id %>/edit" method="post">
 
                 <div class="mb-3">

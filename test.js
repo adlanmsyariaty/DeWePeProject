@@ -22,4 +22,32 @@
 
 // ? sequelize seed:generate --name table_name(plural) // sesuain aja sebelum di jalanin di terminal
 
+/*
+
+admin bisa CRUD database concert
+
+
+*/const nodemailer = require('nodemailer')
+
+let transporter = nodemailer.createTransport({
+    service: "hotmail",
+    auth: {
+        user: "team15pp22@outlook.co.id",
+        pass: "DimKur123"
+    }
+});
+
+let mailOptions = {
+    from: 'team15pp22@outlook.co.id',
+    to: 'ichbindimas@gmail.com',
+    subject: 'Test masuk nodemailer',
+    text: `Akun anda adalah: test masuk, password: Tolong jangan bagikan ke orang lain.`
+};
+
+transporter.sendMail(mailOptions, (err, info) => {
+    if (err) console.log(err);
+});
+
+
+
 
