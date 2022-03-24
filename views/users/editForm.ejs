@@ -22,6 +22,7 @@
     <div class="form">
         <div class="col-12">
             <h1>Edit Profile #<%= user.id %> </h1>
+<<<<<<< HEAD
             <% if (error) {%>
                 <% error = error.split(',')%>
                 <% error.forEach(el => {%>
@@ -31,6 +32,8 @@
                     </div>
                 <% }) %>
             <% } %>
+=======
+>>>>>>> d33214b04145d1dbf17503ef9067d1446beef1af
             <form action="/users/<%= user.id %>/edit" method="post">
 
                 <div class="mb-3">
