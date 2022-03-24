@@ -16,12 +16,81 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Insert your active email'
+        },
+        notNull: {
+          args: true,
+          msg: "Can't allow null"
+        },
+        isEmail: {
+          args: true,
+          msg: 'Please insert corect for format email'
+        }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Insert your password'
+        },
+        notNull: {
+          args: true,
+          msg: "Can't allow null"
+        }
+      }
+    },
     role: DataTypes.STRING,
-    fullName: DataTypes.STRING,
-    age: DataTypes.INTEGER,
-    gender: DataTypes.STRING
+    fullName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Insert your fullname'
+        },
+        notNull: {
+          args: true,
+          msg: "Can't allow null"
+        }
+      }
+    },
+    age: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Insert your curent age'
+        },
+        notNull: {
+          args: true,
+          msg: "Can't allow null"
+        }
+      }
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Select your gender'
+        },
+        notNull: {
+          args: true,
+          msg: "Can't allow null"
+        }
+      }
+    }
   }, {
     hooks: {
       beforeCreate: (User) => {

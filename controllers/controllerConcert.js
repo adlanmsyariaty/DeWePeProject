@@ -1,11 +1,29 @@
 const { Concert, Ticket, User, Profile } = require('../models')
-
+const { Op } = require('sequelize')
 class ControllerConcert {
     static showConcerts(req, res) {
         const userId = req.session.userId
         const notif = req.query.notif
+        const guestStar = req.query.guestStar
+        const date = req.query.date
         let result = []
-        Concert.findAll()
+        let options = {
+            where: {},
+            order: []
+        }
+        if (guestStar) {
+            options.where = {
+                ...options.where,
+                guestStar: {
+                    [Op.iLike]: `%${guestStar}%`
+                }
+            }
+        }
+        if (date) {
+            let newArr = ['performanceDate', 'DESC']
+            options.order.push(newArr)
+        }
+        Concert.findAll(options)
             .then(data => {
                 result.push(data)
                 return User.findOne({
@@ -24,6 +42,68 @@ class ControllerConcert {
             })
             .catch(err => {
                 res.send(err)
+            })
+    }
+    static concertEditForm(req, res) {
+        const { concertId } = req.params
+        const error = req.query.errors
+        Concert.findByPk(concertId)
+            .then(concert => {
+                res.render('concerts/concertEditForm', { concert, error })
+            })
+            .catch(error => {
+                res.send(error)
+            })
+    }
+    static concertEdit(req, res) {
+        const { concertId } = req.params
+        const { guestStar, totalAudience, location, performanceDate } = req.body
+        Concert.update({ guestStar, totalAudience, location, performanceDate }, {
+            where: {
+                id: concertId
+            }
+        })
+            .then(() => {
+                res.redirect(`/concerts`)
+            })
+            .catch(error => {
+                if (error.name === 'SequelizeValidationError') {
+                    error = error.errors.map(el => el.message)
+                }
+                res.redirect(`/concerts/edit/${concertId}?errors=${error}`)
+            })
+    }
+
+    static concertForm(req, res) {
+        const errors = req.query.errors
+        res.render('concerts/concertAddForm', { errors })
+    }
+    static addNewGS(req, res) {
+
+        const { guestStar, totalAudience, location, performanceDate } = req.body
+        Concert.create({ guestStar, totalAudience, location, performanceDate })
+            .then(() => {
+                res.redirect('/concerts')
+            })
+            .catch(error => {
+                if (error.name === 'SequelizeValidationError') {
+                    error = error.errors.map(el => el.message)
+                }
+                res.redirect(`/concerts/add?errors=${error}`)
+            })
+    }
+    static deleteConcert(req, res) {
+        const { concertId } = req.params
+        Concert.destroy({
+            where: {
+                id: concertId
+            }
+        })
+            .then(() => {
+                res.redirect(`/concerts`)
+            })
+            .catch(error => {
+                res.send(error)
             })
     }
 }

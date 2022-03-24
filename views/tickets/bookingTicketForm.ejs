@@ -17,18 +17,19 @@
             font-size: 50px;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
+            user-select: none;
         }
         .row {
             display: flex;
             justify-content: center;
         }
         .screen {
-            background-color: rgb(240, 156, 156);
+            background-color: rgb(8, 190, 84);
             height: 120px;
             width: 100%;
             margin: 15px 0;
             transform: rotateX(-48deg);
-            box-shadow: 0 3px 10px rgba(201, 78, 78, 0.7);
+            box-shadow: 0 10px 30px rgba(0, 255, 149, 0.7);
         }
         .container {
             perspective: 1000px;
@@ -53,9 +54,20 @@
         <% for(let i = 0; i < 5; i++) {%>
             <div class="row">
             <% for(let j = 0; j < result.totalAudience/10; j++) {%>
-                <div class="seat">
-                    <p style="font-size:10px;color:white;text-align:center;margin-top:5px"><%=`${String.fromCharCode(65 + i)}${j + 1}`%></p>
-                </div>
+                <% let flag = false %>
+                <% result.Tickets.forEach(el => { %>
+                    <% if(el.seatNumber === `${String.fromCharCode(65 + i)}${j + 1}`) {%>
+                        <div class="seat" style="background-color:red;">
+                            <p style="font-size:10px;color:white;text-align:center;margin-top:5px"><%=`${String.fromCharCode(65 + i)}${j + 1}`%></p>
+                        </div>
+                        <% flag = true %>
+                    <% } %>
+                <% }) %>
+                <% if (!flag) {%>
+                    <div class="seat">
+                        <p style="font-size:10px;color:white;text-align:center;margin-top:5px"><%=`${String.fromCharCode(65 + i)}${j + 1}`%></p>
+                    </div>
+                <% } %>
             <% } %>
             </div>
         <% } %>
@@ -75,7 +87,22 @@
         <form action="/tickets/booking/<%= result.id%>" method="POST">
             <div class="form-group">
                 <label>Seat Number</label>
-                <input name="seatNumber" class="form-control" placeholder="Type your seat number...">
+                <select name="seatNumber" class="form-control">
+                    <option value="" selected disabled>Choose...</option>
+                    <% for(let i = 0; i < 5; i++) {%>
+                        <% for(let j = 0; j < result.totalAudience/10; j++) {%>
+                            <% let flag = false %>
+                            <% result.Tickets.forEach(el => { %>
+                                <% if(el.seatNumber === `${String.fromCharCode(65 + i)}${j + 1}`) {%>
+                                    <% flag = true %>
+                                <% } %>
+                            <% }) %>
+                            <% if (!flag) {%>
+                                <option value=<%=`${String.fromCharCode(65 + i)}${j + 1}`%>><%=`${String.fromCharCode(65 + i)}${j + 1}`%></option>
+                            <% } %>
+                        <% } %>
+                    <% } %>
+                </select>
                 <br>
                 <label>Ticket Type</label>
                 <select class="form-control" name="type">
