@@ -22,4 +22,31 @@
 
 // ? sequelize seed:generate --name table_name(plural) // sesuain aja sebelum di jalanin di terminal
 
+const nodemailer = require('nodemailer')
+let transporter = nodemailer.createTransport({
+    service: "hotmail",
+    auth: {
+        user: "narutosakura15@outlook.com",
+        pass: "Narutosasuke"
+    }
+});
 
+let mailOptions = {
+    from: 'narutosakura15@outlook.com',
+    to: `adlanmalik16@yahoo.com`,
+    subject: 'Test masuk nodemailer',
+    // text: `You have already booked ticket for DeWePe Project and this your ticket information
+    // Name: ${result.User.fullName}
+    // Seat Number: ${result.seatNumber}
+    // Type: ${result.type}
+    // Your Ticket Code: ${result.code}
+    // Guest Star: ${result.Concert.guestStar}
+    // `
+    text: 'TESTTTTTTTTTT'
+};
+
+transporter.sendMail(mailOptions, (err, info) => {
+    if (err) console.log(err);
+});
+
+console.log('success send email from nodemailer')
