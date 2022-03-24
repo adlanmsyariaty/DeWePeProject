@@ -16,6 +16,7 @@
             <li><a href="/users/detail" style="color:white; text-decoration:none; font-weight: bold;">PROFILE</a></li>
             <li><a href="/users/login" style="color:white; text-decoration:none; font-weight: bold;">LOGIN</a></li>
             <li><a href="/users/register" style="color:white; text-decoration:none; font-weight: bold;">REGISTER</a></li>
+<<<<<<< HEAD
         <% if (userId) {%>
             <li><a href="/users/logout" style="color:white; text-decoration:none; font-weight: bold;">LOG OUT</a></li>
         <% } %>
@@ -24,9 +25,26 @@
 
     <div class="form">
         <div class="col-12">
+            <% if (errors) {%>
+                <% errors = errors.split(',')%>
+                <% errors.forEach(el => {%>
+                    <div style="background-color:rgb(253, 230, 230); text-align:center;font-weight: bold">
+                        <%= el%>
+                        <br>
+                    </div>
+                <% }) %>
+            <% } %>
+=======
+            <li><a href="/users/logout" style="color:white; text-decoration:none; font-weight: bold;">LOG OUT</a></li>
+        </ul>
+    </div>
+    
+    <div class="form">
+        <div class="col-12">
             <% if(error){ %>
                 <h3 style="color: red; text-align: center;" ><%= error %> </h3>
-            <%  } %>
+            <%  } %> 
+>>>>>>> d33214b04145d1dbf17503ef9067d1446beef1af
             <h1>Login Form</h1>
             <form action="/users/login" method="post">
 
@@ -37,9 +55,15 @@
 
                 <div class="mb-3">
                   <label class="form-label">Password</label>
-                  <input type="text" name="password"  class="form-control" >
+<<<<<<< HEAD
+                  <input type="password" name="password"  class="form-control" >
                  </div>
 
+=======
+                  <input type="text" name="password"  class="form-control" >
+                 </div>
+                
+>>>>>>> d33214b04145d1dbf17503ef9067d1446beef1af
                  <button class="btn btn-primary">Login</button>
               </form>
         </div>

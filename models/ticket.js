@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     code: {
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       unique: true,
     },
     UserId: DataTypes.INTEGER,

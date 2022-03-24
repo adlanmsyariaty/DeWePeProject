@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+<body style="margin:0px">
+
+    <div style="display:flex; justify-content: space-between; background-color: black;">
+            <h1 style="margin:10px; color: white;">DeWePe Ticket Online</h1>
+            <ul style="display:flex; align-items: center; list-style: none; gap: 1.5rem; margin: 10px;">
+            <li><a href="/" style="color:white; text-decoration:none; font-weight: bold;">HOME</a></li>
+            <li><a href="/users/logout" style="color:white; text-decoration:none; font-weight: bold;">LOG OUT</a></li>
+            </ul>
+    </div>
+    <div class="container" style="width: 60%; ">
+        <div class="col-12">
+            <div class="row" style="text-align: center;">
+                <h1>Add New Performance</h1>
+                <% if (errors) {%>
+                    <% errors = errors.split(',')%>
+                    <% errors.forEach(el => {%>
+                        <div style="background-color:rgb(253, 230, 230); text-align:center;font-weight: bold">
+                            <%= el%>
+                            <br>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+            <div class="form">
+                <form action="/concerts/add" method="post">
+                    <!-- guestStar -->
+                    <div class="mb-3">
+                        <label class="form-label">Guest Star</label>
+                        <input type="text" class="form-control" name="guestStar">
+                      </div>
+                    <!-- totalAudience -->
+                    <div class="mb-3" style="margin-top: 10px;">
+                        <label class="form-label">Total Audience</label>
+                        <input style="width: 80px;" type="number" class="form-control" name="totalAudience">
+                    </div>
+                    <!-- location -->
+                    <div class="mb-3" style="margin-top: 10px;">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" name="location">
+                    </div>
+                    <!-- datePerform -->
+                    <div class="mb-3" style="margin-top: 10px;">
+                        <label class="form-label">Performance Date</label>
+                        <input type="date" class="form-control" name="performanceDate">
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 10px;">Submit</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

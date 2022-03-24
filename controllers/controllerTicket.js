@@ -1,5 +1,7 @@
 const { Concert, Ticket, User, Profile } = require('../models')
 const { Op } = require('sequelize')
+const nodemailer = require('nodemailer')
+
 class ControllerTicket {
     static bookingTicket(req, res) {
         const userId = req.session.userId
@@ -18,7 +20,7 @@ class ControllerTicket {
             })
     }
     static saveBookingTicket(req, res) {
-        const {seatNumber, type} = req.body
+        const { seatNumber, type } = req.body
         const concertId = +req.params.concertId
         const userId = req.session.userId
         Ticket.create({
@@ -27,7 +29,30 @@ class ControllerTicket {
             UserId: userId,
             ConcertId: concertId
         })
-            .then(() => {
+            .then((result) => {
+                // send ticket
+                const testEmail = `ichbindimas@gmail.com`
+                let transporter = nodemailer.createTransport({
+                    service: "hotmail",
+                    auth: {
+                        user: "team15pp22@outlook.co.id",
+                        pass: "DimKur123"
+                    }
+                });
+
+                let mailOptions = {
+                    from: 'team15pp22@outlook.co.id',
+                    to: testEmail,
+                    subject: 'Test masuk nodemailer',
+                    text: `Akun anda adalah: test masuk, password: Tolong jangan bagikan ke orang lain.`
+                };
+
+                transporter.sendMail(mailOptions, (err, info) => {
+                    if (err) console.log(err);
+                });
+
+                console.log('success send email from nodemailer')
+
                 res.redirect(`/concerts?notif=success`)
             })
             .catch(err => {
@@ -42,9 +67,9 @@ class ControllerTicket {
         const concertId = +req.params.concertId
         Ticket.destroy({
             where: {
-                [Op.and] : [
-                    {UserId: userId},
-                    {ConcertId: concertId}
+                [Op.and]: [
+                    { UserId: userId },
+                    { ConcertId: concertId }
                 ]
             }
         })
@@ -82,8 +107,8 @@ class ControllerTicket {
     }
     static saveChangedTicket(req, res) {
         const userId = +req.session.userId
-        const {ticketId} = req.params
-        const {concertId, seatNumber, type} = req.body
+        const { ticketId } = req.params
+        const { concertId, seatNumber, type } = req.body
         Ticket.update({
             seatNumber,
             type,
