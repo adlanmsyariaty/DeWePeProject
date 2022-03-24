@@ -16,13 +16,36 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Ticket.init({
-    seatNumber: DataTypes.STRING,
-    type: DataTypes.STRING,
-    code: DataTypes.STRING,
+    seatNumber: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'Seat number is required'
+        }
+      }
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Ticket type is required'
+        }
+      }
+    },
+    code: {
+      type:DataTypes.STRING,
+      unique: true,
+    },
     UserId: DataTypes.INTEGER,
     ConcertId: DataTypes.INTEGER
   }, {
     sequelize,
+    hooks: {
+      beforeCreate(instance) {
+        instance.code = `${instance.seatNumber}_${instance.type}`
+      }
+    },
     modelName: 'Ticket',
   });
   return Ticket;

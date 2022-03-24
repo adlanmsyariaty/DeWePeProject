@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeWePe Project</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .seat {
+            background-color: #444451;
+            height: 26px;
+            width: 32px;
+            margin: 3px;
+            font-size: 50px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+        .screen {
+            background-color: rgb(240, 156, 156);
+            height: 120px;
+            width: 100%;
+            margin: 15px 0;
+            transform: rotateX(-48deg);
+            box-shadow: 0 3px 10px rgba(201, 78, 78, 0.7);
+        }
+        .container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body style="margin:0px;">
+    <div style="display:flex; justify-content: space-between; background-color: black;">
+        <h1 style="margin:10px; color: white;">DeWePe Ticket Online</h1>
+        <ul style="display:flex; align-items: center; list-style: none; gap: 2rem; margin: 10px;">
+            <li><a href="/" style="color:white; text-decoration:none; font-weight: bold;">HOME</a></li>
+            <li><a href="/users/detail/<%=userId%>" style="color:white; text-decoration:none; font-weight: bold;">PROFILE</a></li>
+        </ul>
+    </div>
+    <div style="margin-top:20px;margin-bottom:60px; margin-left:150px;margin-right:150px">
+        <h2>Booking Ticket</h2>
+        <h4>Guest Star: <%= result.guestStar%></h4>
+        <h5>City: <%= result.location%></h5>
+        <div class="container">
+            <div class="screen"></div>
+        <% for(let i = 0; i < 5; i++) {%>
+            <div class="row">
+            <% for(let j = 0; j < result.totalAudience/10; j++) {%>
+                <div class="seat">
+                    <p style="font-size:10px;color:white;text-align:center;margin-top:5px"><%=`${String.fromCharCode(65 + i)}${j + 1}`%></p>
+                </div>
+            <% } %>
+            </div>
+        <% } %>
+        </div>
+        <div style="color:red;">
+        <% if (errors) {%>
+            <% errors = errors.split(',')%>
+            <% errors.forEach(el => {%>
+                <div style="background-color:rgb(253, 230, 230); text-align:center;font-weight: bold">
+                    <%= el%>
+                    <br>
+                </div>
+            <% }) %>
+        <% } %>
+        </div>
+        <br>
+        <form action="/tickets/<%= userId%>/booking/<%= result.id%>" method="POST">
+            <div class="form-group">
+                <label>Seat Number</label>
+                <input name="seatNumber" class="form-control" placeholder="Type your seat number...">
+                <br>
+                <label>Ticket Type</label>
+                <select class="form-control" name="type">
+                    <option value="" selected disabled>Choose...</option>
+                    <option value="VIP">VIP</option>
+                    <option value="Reguler">Reguler</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+
+    </div>
+</body>
+</html>
