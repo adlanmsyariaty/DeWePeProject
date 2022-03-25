@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Ticket.belongsTo(models.Concert)
       Ticket.belongsTo(models.User)
     }
+    
   }
   Ticket.init({
     seatNumber: {

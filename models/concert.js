@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     dateFormatterEditForm() {
       return `${this.performanceDate.toISOString().substring(0, 10)}`
     }
+    static countConcert() {
+      return Concert.sum('totalAudience')
+    }
   }
   Concert.init({
     guestStar: {

@@ -7,6 +7,7 @@ class ControllerTicket {
         const userId = req.session.userId
         const concertId = +req.params.concertId
         const errors = req.query.errors
+        let newRes = []
         Concert.findOne({
             where: {
                 id: concertId
@@ -14,10 +15,16 @@ class ControllerTicket {
             include: Ticket
         })
             .then(result => {
+                newRes.push(result)
+                return Concert.countConcert()
+            })
+            .then(resultSum => {
+                newRes.push(resultSum)
                 res.render('tickets/bookingTicketForm', {
-                    result,
+                    result: newRes[0],
                     userId,
-                    errors
+                    errors,
+                    total: newRes[1]
                 })
             })
             .catch(err => {
