@@ -7,6 +7,7 @@ class ControllerTicket {
         const userId = req.session.userId
         const concertId = +req.params.concertId
         const errors = req.query.errors
+        let newRes = []
         Concert.findOne({
             where: {
                 id: concertId
@@ -14,10 +15,16 @@ class ControllerTicket {
             include: Ticket
         })
             .then(result => {
+                newRes.push(result)
+                return Concert.countConcert()
+            })
+            .then(resultSum => {
+                newRes.push(resultSum)
                 res.render('tickets/bookingTicketForm', {
-                    result,
+                    result: newRes[0],
                     userId,
-                    errors
+                    errors,
+                    total: newRes[1]
                 })
             })
             .catch(err => {
@@ -46,14 +53,14 @@ class ControllerTicket {
                 let transporter = nodemailer.createTransport({
                     service: "hotmail",
                     auth: {
-                        user: "team15pp22@outlook.co.id",
-                        pass: "DimKur123"
+                        user: "narutosakura15@outlook.com",
+                        pass: "Narutosasuke"
                     }
                 });
-                console.log(result.User)
+
                 let mailOptions = {
-                    from: 'team15pp22@outlook.co.id',
-                    to: `${result.User.email}`,
+                    from: 'narutosakura15@outlook.com',
+                    to: result.User.email,
                     subject: 'Test masuk nodemailer',
                     text: `You have already booked ticket for DeWePe Project and this your ticket information
                     Name: ${result.User.fullName}
@@ -67,7 +74,6 @@ class ControllerTicket {
                 transporter.sendMail(mailOptions, (err, info) => {
                     if (err) console.log(err);
                 });
-
                 console.log('success send email from nodemailer')
                 res.redirect(`/concerts?notif=success`)
             })

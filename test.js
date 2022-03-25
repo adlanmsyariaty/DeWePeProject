@@ -22,4 +22,38 @@
 
 // ? sequelize seed:generate --name table_name(plural) // sesuain aja sebelum di jalanin di terminal
 
+// const nodemailer = require('nodemailer')
+// let transporter = nodemailer.createTransport({
+//     service: "hotmail",
+//     auth: {
+//         user: "narutosakura15@outlook.com",
+//         pass: "Narutosasuke"
+//     }
+// });
 
+// let mailOptions = {
+//     from: 'narutosakura15@outlook.com',
+//     to: `adlanmalik16@yahoo.com`,
+//     subject: 'Test masuk nodemailer',
+//     // text: `You have already booked ticket for DeWePe Project and this your ticket information
+//     // Name: ${result.User.fullName}
+//     // Seat Number: ${result.seatNumber}
+//     // Type: ${result.type}
+//     // Your Ticket Code: ${result.code}
+//     // Guest Star: ${result.Concert.guestStar}
+//     // `
+//     text: 'TESTTTTTTTTTT'
+// };
+
+// transporter.sendMail(mailOptions, (err, info) => {
+//     if (err) console.log(err);
+// });
+
+// console.log('success send email from nodemailer')
+
+// postgres
+// hoohlvwqoycspv
+// c38b22b26f41c38a12eb8b4ab1b3ac631658b599c08cb2cab4ae26d27bfed0b0
+// ec2-3-225-213-67.compute-1.amazonaws.com
+// 5432
+// ddpvd04ru7nvf5
